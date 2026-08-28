@@ -1,0 +1,48 @@
+# Publishes the bottles a pull request built. Runs only when a
+# collaborator applies the `pr-pull` label, which is the release gate:
+# label changes need triage access, so outside contributors cannot
+# trigger a publish. `pull_request_target` runs THIS file from main with
+# a write token; it must never check out or execute pull-request code.
+name: brew pr-pull
+
+on:
+  pull_request_target:
+    types:
+      - labeled
+
+permissions:
+  contents: read
+
+jobs:
+  pr-pull:
+    if: contains(github.event.pull_request.labels.*.name, 'pr-pull')
+    runs-on: ubuntu-latest
+    permissions:
+      # brew pr-pull uploads bottles to a GitHub release on this repo and
+      # the follow-up step pushes the rewritten bottle commit to main.
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@main
+
+      - name: Set up git
+        uses: Homebrew/actions/git-user-config@main
+
+      - name: Pull bottles and upload them to a GitHub release
+        env:
+          HOMEBREW_GITHUB_API_TOKEN: ${{ github.token }}
+          PULL_REQUEST: ${{ github.event.pull_request.number }}
+        run: brew pr-pull --debug --tap "$GITHUB_REPOSITORY" "$PULL_REQUEST"
+
+      - name: Push commits
+        uses: Homebrew/actions/git-try-push@main
+        with:
+          token: ${{ github.token }}
+          branch: main
+
+      - name: Delete branch
+        if: github.event.pull_request.head.repo.fork == false
+        env:
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: git push --delete origin "$BRANCH"

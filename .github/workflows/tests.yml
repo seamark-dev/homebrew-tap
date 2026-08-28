@@ -1,0 +1,53 @@
+# Builds and tests the formula on every bottled platform. On pull
+# requests, `brew test-bot --only-formulae` produces the actual bottle
+# archives and uploads them as artifacts; publish.yml turns those
+# artifacts into the released bottles, so this workflow is the only
+# place bottles are ever built.
+name: brew test-bot
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test-bot:
+    strategy:
+      matrix:
+        # Native runners only: seamark needs CGO (tree-sitter), so each
+        # bottle must be built on its own platform. Mirrors the release
+        # matrix of seamark-dev/seamark (minus linux-arm64, which has no
+        # runner here and falls back to a source build).
+        os: [ubuntu-latest, macos-15-intel, macos-15]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Set up Homebrew
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@main
+
+      - name: Cache Homebrew Bundler RubyGems
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.set-up-homebrew.outputs.gems-path }}
+          key: ${{ matrix.os }}-rubygems-${{ steps.set-up-homebrew.outputs.gems-hash }}
+          restore-keys: ${{ matrix.os }}-rubygems-
+
+      - run: brew test-bot --only-cleanup-before
+
+      - run: brew test-bot --only-setup
+
+      - run: brew test-bot --only-tap-syntax
+
+      - run: brew test-bot --only-formulae
+        if: github.event_name == 'pull_request'
+
+      - name: Upload bottles as artifact
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: bottles_${{ matrix.os }}
+          path: "*.bottle.*"
