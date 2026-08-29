@@ -20,8 +20,8 @@ seamark orient
 ```
 
 The formula installs the `seamark` binary plus bash/zsh/fish shell
-completions, and declares `git` as a dependency (history mining is part
-of indexing).
+completions. History mining shells out to `git`, which every Homebrew
+install already guarantees (`seamark doctor` verifies it).
 
 ### Platforms
 
