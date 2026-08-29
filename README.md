@@ -30,9 +30,13 @@ Pre-built bottles are published for:
 | Platform                    | Bottle                                |
 | --------------------------- | ------------------------------------- |
 | macOS arm64 (Apple Silicon) | yes                                   |
-| macOS x86_64 (Intel)        | yes                                   |
+| macOS x86_64 (Intel)        | no — builds from source automatically |
 | Linux x86_64                | yes                                   |
 | Linux arm64                 | no — builds from source automatically |
+
+Intel macOS is a Homebrew Tier 3 platform: homebrew-core no longer
+publishes Intel bottles for build dependencies such as `go`, and
+`test-bot` refuses to bottle a formula whose dependencies are unbottled.
 
 Where no bottle exists, Homebrew builds from source. That needs Go ≥ 1.25
 and a C compiler (the tree-sitter bindings use CGO); Homebrew installs Go
@@ -63,6 +67,11 @@ automatically.
 
    Manual fallback: edit `url` and `sha256` in `Formula/seamark.rb` by
    hand (`shasum -a 256` on the downloaded tarball) and open a PR.
+
+   Name a manual branch `bump-seamark-X.Y.Z`, never `seamark-X.Y.Z`:
+   the bottle release tag is `seamark-X.Y.Z`, and a branch with the
+   same name makes the publish workflow's branch cleanup fail on an
+   ambiguous refspec (`brew bump-formula-pr` picks safe names itself).
 
 3. **Wait for CI.** The `brew test-bot` workflow builds the formula on
    all three bottled platforms, runs `brew audit`, runs the full

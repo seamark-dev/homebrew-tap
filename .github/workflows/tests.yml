@@ -19,10 +19,11 @@ jobs:
     strategy:
       matrix:
         # Native runners only: seamark needs CGO (tree-sitter), so each
-        # bottle must be built on its own platform. Mirrors the release
-        # matrix of seamark-dev/seamark (minus linux-arm64, which has no
-        # runner here and falls back to a source build).
-        os: [ubuntu-latest, macos-15-intel, macos-15]
+        # bottle must be built on its own platform. No Intel macOS job:
+        # Homebrew treats it as Tier 3 and test-bot cannot bottle there
+        # (unbottled deps). No linux-arm64 runner; both fall back to a
+        # source build.
+        os: [ubuntu-latest, macos-15, macos-26]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Set up Homebrew
