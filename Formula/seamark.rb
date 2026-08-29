@@ -13,6 +13,12 @@ class Seamark < Formula
     strategy :github_latest
   end
 
+  bottle do
+    root_url "https://github.com/seamark-dev/homebrew-tap/releases/download/seamark-0.5.4"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b4f2483927d57bd9f313a6163253059b15da0f40235d385fd40b91a53a496aca"
+    sha256 cellar: :any,                 x86_64_linux:  "7a5b3a5204f8fe3e8780a55dad59bfda1a16849c144544e38af713e7db1d340e"
+  end
+
   depends_on "go" => :build
 
   # History mining shells out to git at runtime, but Homebrew forbids
