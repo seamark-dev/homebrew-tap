@@ -14,10 +14,10 @@ class Seamark < Formula
   end
 
   bottle do
-    root_url "https://github.com/seamark-dev/homebrew-tap/releases/download/seamark-0.6.0"
-    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "2f786111ed6601ad1883e3645522c99f9044549c73e9df619e2d401abbbbb5e0"
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5a435ea5598dc9eed016f127eae9a99a3a151a85736f7a925142568052906735"
-    sha256 cellar: :any,                 x86_64_linux:  "d79f3f69bb7dadb35ea2761bbc5cde6b50de84d0e298006c40001c161a91c773"
+    root_url "https://github.com/seamark-dev/homebrew-tap/releases/download/seamark-0.7.0"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "2ac36a0437902ce2c676866a8d49a0da77916a8603cf8dcaec61706a9873f789"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "e3114e09d076ba525b269e89f332fb43c7bf1a53393e459bfe1ac4ec8d4a338d"
+    sha256 cellar: :any,                 x86_64_linux:  "eab3f95a7b80a12ea18a84a09f3d8cd9cd821cbaeb2bfbc8ead630c86ca6922d"
   end
 
   depends_on "go" => :build
