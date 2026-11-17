@@ -38,7 +38,7 @@ Intel macOS is a Homebrew Tier 3 platform: homebrew-core no longer
 publishes Intel bottles for build dependencies such as `go`, and
 `test-bot` refuses to bottle a formula whose dependencies are unbottled.
 
-Where no bottle exists, Homebrew builds from source. That needs Go ≥ 1.25
+Where no bottle exists, Homebrew builds from source. That needs Go ≥ 1.27
 and a C compiler (the tree-sitter bindings use CGO); Homebrew installs Go
 as a build-time dependency on its own.
 
