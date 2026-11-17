@@ -3,8 +3,8 @@
 class Seamark < Formula
   desc "Local code intelligence, repo memory, and guardrails for coding agents"
   homepage "https://github.com/seamark-dev/seamark"
-  url "https://github.com/seamark-dev/seamark/archive/refs/tags/v0.8.0.tar.gz"
-  sha256 "f333ea31c3b077a341ee5440befe62170a885c465bbd6a3ce0036087dbef9677"
+  url "https://github.com/seamark-dev/seamark/archive/refs/tags/v0.9.0.tar.gz"
+  sha256 "d6d27ee9ab9b9cc739dd7a9c0ef871a23a6a1522c2aa98bf2ca648ec2deb6189"
   license "Apache-2.0"
   head "https://github.com/seamark-dev/seamark.git", branch: "main"
 
